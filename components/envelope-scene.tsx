@@ -26,7 +26,7 @@ export function EnvelopeScene({ onFinished }: Props) {
     phase === 'expanding' ||
     phase === 'revealed'
 
- const playMusic = () => {
+  const playMusic = () => {
         if (!audioRef.current) return
 
         const audio = audioRef.current
@@ -81,21 +81,31 @@ export function EnvelopeScene({ onFinished }: Props) {
 
   return (
   <div className="relative w-screen min-h-screen overflow-hidden">
- {/* ===========================
+ {/*    ===========================
         BACKGROUND
-    ============================ */}
+        ============================ */}
 
-   <Image
-  src="/images/flat-background.jpg"
-  alt=""
-  fill
-  sizes="100vw"
-  className="object-cover"
-/>
+   <div className="absolute inset-0">
+  <Image
+    src="/images/flat-background.jpg"
+    alt=""
+    fill
+    sizes="100vw"
+    className="object-cover"
+  />
+
+  <div
+    className="absolute inset-0"
+    style={{
+      background: "rgba(0, 0, 0, 0.12)",
+    }}
+  />
+</div>
+
 
 {/* ===========================
     WINDOW SHADOW
-=========================== */}
+    =========================== */}
 
 <div
   aria-hidden
@@ -125,7 +135,7 @@ export function EnvelopeScene({ onFinished }: Props) {
 
 {/* ===========================
     AMBIENT LIGHT
-=========================== */}
+    =========================== */}
 
 <div
   aria-hidden
@@ -145,7 +155,7 @@ export function EnvelopeScene({ onFinished }: Props) {
    
 {/* ===========================
     ENVELOPE GLOW
-=========================== */}
+    =========================== */}
 
 <div
   aria-hidden
@@ -166,47 +176,33 @@ export function EnvelopeScene({ onFinished }: Props) {
     zIndex: 10,
   }}
 />
-{/* ===========================
+{/*   ===========================
           ENVELOPE
       ============================ */}
 
       <Image
-        src={
-          phase === 'closed'
-            ? '/images/Closed-envelope.png'
-            : '/images/Envelope-open.png'
-        }
-        alt="Envelope"
-        fill
-        priority
-        className="object-contain pointer-events-none select-none"
-        style={{
-          zIndex: 0,
+  src={
+    phase === 'closed'
+      ? '/images/n-closed-env.png'
+      : '/images/n-open-env.png'
+  }
+         alt="Envelope"
+  fill
+  priority
+  className="object-contain pointer-events-none select-none"
+  style={{
+    zIndex: 1,
 
-opacity:
-  phase === 'revealed'
-    ? 0
-    : 1,
+    filter:
+      "drop-shadow(0 18px 30px rgba(0,0,0,.16))",
 
-transition:
-  'opacity 700ms ease 450ms',
-        }}
-      />
+    opacity: phase === 'revealed' ? 0 : 1,
 
-    {/* Soft spotlight */}
-    <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        zIndex: 1,
-        background: `
-          radial-gradient(
-            ellipse at center,
-            rgba(255,255,255,.65),
-            rgba(255,255,255,0) 70%
-          )
-        `,
-      }}
-    />
+    transition:
+      "opacity 700ms ease 450ms, filter 300ms ease",
+  }}
+/>
+
 
     {/* Vignette */}
     <div
@@ -219,7 +215,7 @@ transition:
 
       {/* ===========================
           PAPER
-      ============================ */}
+        ============================ */}
 
       <div
         className="absolute left-1/2 relative"
@@ -240,8 +236,8 @@ transition:
           maxWidth: '450px',
 
           height: paperExpanded
-  ? '1000px'
-  : '520px',
+  ? '1020px'
+  : '460px',
   transform:
     phase === 'closed'
       ? 'translate(-50%,130px) scale(.18,.18)'
@@ -273,9 +269,10 @@ transition:
   src="/images/ripped-paper2.png"
   alt=""
   fill
-  priority
+  sizes="(max-width: 768px) 92vw, 430px"
   className="object-fill select-none pointer-events-none"
 />
+
                 {/* INVITATION CONTENT */}
 
         <div
@@ -298,74 +295,73 @@ transition:
           <div className="relative">
     <InvitationCard />
 </div>
-      </div>
-{/* Invitation Content */}
-
+</div>
 </div>
 
 {/* ===========================
-          WAX SEAL
-      ============================ */}
+    BONDS
+=========================== */}
 
-      {phase === 'closed' && (
-        <button
-          type="button"
-          onClick={openEnvelope}
-          aria-label="Open invitation"
-          style={{
-            position: 'absolute',
-
-            width: '24%',
-            aspectRatio: '1 / 1',
-
-            left: '50%',
-            top: '58%',
-
-            transform:
-              'translate(-50%,-50%)',
-
-            zIndex: 30,
-
-            border: 'none',
-            background: 'transparent',
-            padding: 0,
-
-            cursor: 'pointer',
-          }}
-        >
-          <Image
-            src="/images/wax-seal-gold.png"
-            alt="Wax Seal"
-              width={200}
-              height={200}
-            priority
-            className="object-contain animate-seal-breathe"
-          />
-        </button>
-      )}
-      <div
-  aria-hidden
-  className="absolute left-1/2"
+{phase === 'closed' && (
+  <button
+  type="button"
+  onClick={openEnvelope}
+  className="absolute rings-float"
   style={{
-    bottom: -120,
-    width: "90vw",
-    maxWidth: 900,
-    height: 380,
+    width: '20%',
+    maxWidth: '92px',
+    aspectRatio: '1 / 1',
 
-    transform: "translateX(-50%)",
+    left: '50%',
+    top: '54.5%',
+
+    transform: 'translate(-50%, -50%)',
+
+    zIndex: 30,
+
+    border: 'none',
+    background: 'transparent',
+    cursor: 'pointer',
+    padding: 0,
+  }}
+>
+
+    <Image
+  src="/images/bonds.png"
+  alt="Engagement Rings"
+  fill
+  sizes="92px"
+  priority
+  className="object-contain rings-breathe"
+/>
+  </button>
+  
+)}
+<div
+  aria-hidden
+  className="absolute left-1/2 pointer-events-none"
+  style={{
+    top: '56%',
+    width: 180,
+    height: 180,
+
+    transform: 'translate(-50%, -50%)',
 
     background:
-      "radial-gradient(rgba(231,197,118,.18), rgba(231,197,118,0) 70%)",
+      'radial-gradient(circle, rgba(223,185,92,.22) 0%, rgba(223,185,92,.08) 45%, rgba(223,185,92,0) 75%)',
 
-    filter: "blur(80px)",
+    filter: 'blur(30px)',
 
-    zIndex: 4,
+    opacity: phase === 'closed' ? 1 : 0,
+
+    transition: 'opacity .4s ease',
+
+    zIndex: 25,
   }}
 />
-            {/* ===========================
-          ENVELOPE SHADOW
-      ============================ */}
-
+ {/* ===========================
+      ENVELOPE SHADOW
+     ============================ */}
       <div
         aria-hidden
         className="absolute left-1/2"
@@ -398,7 +394,7 @@ transition:
 
       {/* ===========================
           PAPER SHADOW
-      ============================ */}
+         ============================ */}
 
       <div
         aria-hidden
@@ -443,7 +439,7 @@ transition:
       />
 {/* ===========================
     DIRECTIONAL LIGHT
-=========================== */}
+    =========================== */}
 
 <div
   aria-hidden
@@ -475,7 +471,7 @@ transition:
 />
       {/* ===========================
           LIGHT OVERLAY
-      ============================ */}
+         ============================ */}
 
       <div
         aria-hidden

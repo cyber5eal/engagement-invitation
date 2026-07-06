@@ -415,3 +415,18 @@ opacity:0;
 .font-cormorant {
   font-family: var(--font-cormorant);
 }
+
+@keyframes ringsBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+.rings-breathe {
+  animation: ringsBreathe 2.8s ease-in-out infinite;
+}
